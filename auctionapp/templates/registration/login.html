@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Log In{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<body style="background-color:lightgrey;">
+
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <p>Click below to logout</p>
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+
+{% else %}
+  <br>
+  <div class="h-100 d-flex align-items-center justify-content-center col-xs-4 col-xs-offset-4" style="background-color: #eee; align-items:center; border-style: solid;">
+    <h2 class='text-primary' style="text-align: center;">Login</h2>
+    {% for message in messages %}
+      {% if message.tags == "error" %}
+          <div class="alert alert-danger">
+              {{ message }}
+          </div>
+      {% endif %}
+    {% endfor %}
+
+    <form method="post">        
+      {% csrf_token %}
+      {{ form | crispy}} 
+    <div style="text-align: center">
+      <button class="btn btn-primary" type="submit">Login</button>
+      <p class="m-5">Don't have an account? Register <a href="http://localhost:8000/register/">here</a></p>
+    </div>
+    </form>
+  </div>
+</body>
+{% endif %}
+{% endblock %}
